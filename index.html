@@ -12,6 +12,14 @@
 </head>
 <body>
 
+<script>
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker
+            .register('sw.js')
+            .then(function() { console.log("[Service Worker] Registered"); });
+    }
+</script>
+
 <div id="scenario-chooser">
     <h1>Choix de la séquence de jeu:</h1>
     <div id="scenari-grid">
