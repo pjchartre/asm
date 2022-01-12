@@ -1,0 +1,489 @@
+:root {
+    --dark-blue: #00123c;
+    --yellow: #fee900;
+    --yellow-light: rgba(254, 233, 0, .8);
+    --white: #FFFFFF;
+    --white-light: rgba(255, 255, 255, .8);
+    --red: #FE0000;
+    --red-light: rgba(254, 0, 0, .8);
+    --green: #00CB00;
+    --green-light: rgba(0, 203, 0, .8);
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--dark-blue);
+    color: var(--yellow);
+    font-family: Arial;
+}
+
+#main-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    /*background-color: rgba(255, 255, 255, .25);*/
+}
+
+#left-panel {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    /*background-color: rgba(255, 0, 0, .25);*/
+}
+
+#left-panel #video-container {
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+
+#left-panel #video-container video {
+    width: 100%;
+}
+
+#controls {
+    text-align: center;
+    font-size: 50px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#controls .button {
+    padding: 0px;
+    margin: 0px;
+    width: 70px;
+    display: inline-block;
+    color: #FFFFFF;
+    opacity: .8;
+    cursor: pointer;
+}
+
+#controls .button:hover {
+    color: var(--yellow);
+}
+
+#controls #time-bar {
+    width: 95%;
+    /*display: block;*/
+    margin: 25px auto 25px auto;
+}
+
+#buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#rate-container, #zoom-container {
+    width: 25%;
+    display: flex;
+    align-items: center;
+}
+
+#rate-container .button, #zoom-container .button {
+    font-size: 25px;
+    width: 45px;
+}
+
+#decision-container {
+    display: flex;
+    justify-content: center;
+}
+
+#decision-container .button {
+    display: inline;
+    border: solid 3px var(--white-light);
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 7px 7px;
+    width: auto;
+    background: none;
+}
+
+#rate-container {
+    justify-content: flex-start;
+    padding-left: 2.5%;
+    color: var(--white-light);
+}
+
+#rate-container .button {
+    border: solid 3px var(--white-light);
+    border-radius: 10px;
+    font-size: 15px;
+    padding: 7px 0px;
+    margin-right: 5px;
+}
+
+#rate-container .button:hover, #decision-container .button:hover {
+    border-color: var(--yellow-light);
+}
+
+#rate-container .button.selected {
+    color: var(--yellow-light);
+    border-color: var(--yellow-light);
+}
+
+#zoom-container {
+    justify-content: flex-end;
+    padding-right: 2.5%;
+}
+
+#control-container {
+    width: 50%;
+}
+
+#zoom-container .button {
+    width: 45px;
+    font-size: 25px;
+}
+
+#right-panel {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*background-color: rgba(0, 255, 0, .25);*/
+}
+
+#right-panel video {
+    flex: 1;
+    max-width: 100%;
+    max-height: 25%;
+    cursor: pointer;
+    /*max-height: calc(25% - 4px);*/
+    /*margin: 2px;*/
+}
+
+
+input[type=range] {
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    width: 100%; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+
+    /* Hides the slider so custom styles can be added */
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+/* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /*border: 1px solid #000000;*/
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: var(--yellow);
+    cursor: pointer;
+    margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+}
+
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    /*border: 1px solid #000000;*/
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: var(--yellow);
+    cursor: pointer;
+}
+
+/* All the same stuff for IE */
+input[type=range]::-ms-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    /*border: 1px solid #000000;*/
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: var(--yellow);
+    cursor: pointer;
+}
+
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: var(--white-light);
+    border-radius: 1.3px;
+    border: 0.2px solid #010101;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: var(--white-light);
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: var(--white-light);
+    border-radius: 1.3px;
+    border: 0.2px solid #010101;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background-color: var(--yellow-light);
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    height: 8.4px;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background-color: var(--yellow-light);
+}
+
+input[type=range]::-ms-fill-upper {
+    background: var(--white-light);
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: var(--white-light);
+}
+
+input[type=range]::-moz-range-progress {
+    background-color: var(--yellow-light);
+    height: 8.4px;
+}
+
+.scale-1x {
+    transform: scale(1);
+}
+
+.scale-2x {
+    transform: scale(2);
+}
+
+.scale-3x {
+    transform: scale(3);
+}
+
+.scale-4x {
+    transform: scale(4);
+}
+
+.scale-5x {
+    transform: scale(5);
+}
+
+#zoom-video-container video {
+    pointer-events: none;
+}
+
+#decision-overlay {
+    display: flex;
+    background-color: black;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 1000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: var(--white-light);
+    opacity: 0;
+    transition: all 1s ease-in-out;
+    pointer-events: none;
+}
+
+#decision-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#decision-overlay #close-button {
+    content: '×';
+    position: absolute;
+    font-size: 150px;
+    right: 0px;
+    top: 0px;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--white-light);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.decision-choices {
+    margin-top: 50px;
+}
+
+.decision-choices button {
+    font-size: 150px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.decision-choices button:active {
+    transform: translate(1px, 5px);
+}
+
+#validate-button {
+    color: var(--green-light);
+}
+
+#validate-button:hover {
+    color: var(--green);
+}
+
+#invalidate-button {
+    color: var(--red-light);
+}
+
+#invalidate-button:hover {
+    color: var(--red);
+}
+
+#decision-overlay > div {
+    position: absolute;
+    text-align: center;
+    transform: translateY(-70vh);
+    opacity: 0;
+    transition: transform .5s ease-out, opacity .4s ease-out;
+    pointer-events: none;
+}
+
+#decision-overlay.step1 #step1 {
+    transform: none;
+    opacity: 1;
+    transition: transform 1s ease-out .8s, opacity 1.3s ease-out .9s;
+    pointer-events: auto;
+}
+
+#decision-overlay #step2 {
+    transform: none;
+}
+
+#decision-overlay.step2 #step2 {
+    opacity: 1;
+    transition: opacity .8s ease-out .8s;
+    pointer-events: auto;
+}
+
+.good-answer {
+    color: var(--green-light);
+}
+
+.wrong-answer {
+    color: var(--red-light);
+}
+
+#answer-message {
+    font-weight: bold;
+    font-size: 60px;
+}
+
+.answer-explanation span {
+    font-size: 20px;
+    margin: 20px;
+    display: inline-block;
+}
+
+#scenario-chooser {
+    position: absolute;
+    z-index: 2000;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: var(--dark-blue);
+    display: flex;
+    flex-direction: column;
+    color: var(--white-light);
+}
+
+#scenario-chooser.hidden{
+    display: none;
+}
+
+#scenario-chooser h1{
+    text-align: center;
+    font-size: 50px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+#scenario-chooser #scenari-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+    margin: 0 10vw;
+    text-align: center;
+}
+
+#scenari-grid .scenario {
+    display: flex;
+    flex-direction: column;
+    margin: auto auto 25px;
+    cursor: pointer
+}
+
+.scenario .scenario-image {
+    box-shadow: rgba(0, 0, 0, .5) 0px 0px 6px 0px, rgba(0, 0, 0, .25) 0px 0px 18px 0px;
+    margin-bottom: 20px;
+}
+
+.scenario .scenario-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.scenario .scenario-description {
+    font-size: .8em;
+    font-weight: lighter;
+    opacity: .7;
+}
