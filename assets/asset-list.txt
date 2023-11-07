@@ -1,0 +1,6 @@
+assets/preview1.jpg
+assets/video/angle1.mp4
+assets/video/angle2.mp4
+assets/video/angle3.mp4
+assets/video/angle4.mp4
+assets/video/explanation.mp4

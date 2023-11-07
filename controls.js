@@ -1,8 +1,3 @@
-/*
-TODO:
-    Multi scenariis
-    Loading
- */
 const PLAYING = true;
 const PAUSED = false;
 const MIN_ZOOM_LEVEL = 1;
@@ -10,6 +5,8 @@ const MAX_ZOOM_LEVEL = 5;
 
 const VALIDATE = true;
 const INVALIDATE = false;
+
+let scenario = null;
 
 let isPlaying = false;
 let playPauseElement, fromStartElement, toEndElement, stepBackElement, stepForwardElement;
@@ -162,7 +159,7 @@ function bindClickEventToRates() {
 
 function updateVideosRates(rate) {
     currentRate = rate;
-    const videosElements = document.querySelectorAll('video');
+    const videosElements = document.getElementById('main-container').querySelectorAll('video');
     [...videosElements].forEach(v => {
         v.playbackRate = rate;
     })
@@ -251,9 +248,6 @@ function closeDecisionOverlay() {
 function makeDecision(validated) {
     let message = 'Bonne réponse';
     let classMessage = 'good-answer';
-    console.log(game.tryShouldBeValidated);
-    console.log(validated);
-    console.log(game.tryShouldBeValidated != validated);
     if (game.tryShouldBeValidated != validated) {
         message = 'Mauvaise réponse';
         classMessage = 'wrong-answer';
@@ -273,11 +267,22 @@ function makeDecision(validated) {
     overlayElement.classList.add('step2');
 }
 
-function selectScenario(e) {
+function selectedScenario(s) {
+    console.log('selectedScenario', s);
+    scenario = s;
+    document.querySelector("#zoom-video-container video").setAttribute('src', s.videos[0]);
+
+
+
     document.getElementById('scenario-chooser').classList.add('hidden');
 }
 
-window.onload = () => {
+window.addEventListener('scenario-selected', (event) => {
+    console.log('listener event', event);
+    selectedScenario(event.detail.scenario);
+});
+
+window.addEventListener('load', (event) => {
     videoElement = document.getElementById('video-container').querySelector('video');
     playPauseElement = document.getElementById('play-pause-button');
     fromStartElement = document.getElementById('from-start-button');
@@ -308,8 +313,4 @@ window.onload = () => {
     document.getElementById('close-button').onclick = closeDecisionOverlay;
     document.getElementById('validate-button').onclick = () => makeDecision(VALIDATE);
     document.getElementById('invalidate-button').onclick = () => makeDecision(INVALIDATE);
-    const scenariiElements = [...document.getElementsByClassName('scenario')];
-    scenariiElements.forEach(e => {
-        e.onclick = () => selectScenario(e);
-    })
-}
+});
