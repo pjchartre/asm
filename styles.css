@@ -29,6 +29,37 @@ html, body {
     /*background-color: rgba(255, 255, 255, .25);*/
 }
 
+#main-container #bottom-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+}
+
+#main-container #bottom-container .back-button {
+    color: var(--white);
+    text-wrap: nowrap;
+    font-weight: 200;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#main-container #bottom-container .back-button i {
+    margin: 0px 10px;
+}
+
+#main-container .powered-by-cgi {
+    color: var(--white);
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+#main-container .powered-by-cgi img {
+    max-height: 25px;
+    margin: 0px 30px 0px 10px;
+}
+
 #left-panel {
     width: 75%;
     display: flex;
@@ -448,6 +479,7 @@ input[type=range]::-moz-range-progress {
     display: flex;
     flex-direction: column;
     color: var(--white-light);
+    justify-content: center;
 }
 
 .hidden{
@@ -457,7 +489,7 @@ input[type=range]::-moz-range-progress {
 #scenario-chooser h1{
     text-align: center;
     font-size: 50px;
-    margin-top: 20px;
+    margin-top: auto;
     margin-bottom: 50px;
 }
 
@@ -478,8 +510,11 @@ input[type=range]::-moz-range-progress {
 }
 
 .scenario .scenario-image {
-    box-shadow: rgba(0, 0, 0, .5) 0px 0px 6px 0px, rgba(0, 0, 0, .25) 0px 0px 18px 0px;
     margin-bottom: 20px;
+}
+
+.scenario .scenario-image img {
+    box-shadow: rgba(0, 0, 0, .5) 0px 0px 6px 0px, rgba(0, 0, 0, .25) 0px 0px 18px 0px;
 }
 
 .scenario .scenario-text {
@@ -543,15 +578,29 @@ input[type=range]::-moz-range-progress {
     margin-bottom: 20px;
 }
 
-#splash-screen .powered-by-cgi {
+.powered-by-cgi {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     font-size: 32px;
     font-weight: 200;
+}
+
+#splash-screen .powered-by-cgi {
+    flex: 1;
     animation-name: appears;
     animation-delay: 2s;
     animation-duration: 4s;
 }
 
-#splash-screen .powered-by-cgi img {
+#scenario-chooser .powered-by-cgi {
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+.powered-by-cgi img {
     max-height: 50px;
     display: inline;
     margin: 0px 10px;

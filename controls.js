@@ -230,6 +230,11 @@ function bindMouseEventToVideoContainer() {
 
 }
 
+function showScenarioChooser() {
+    document.getElementById('splash-screen').classList.add('hidden');
+    document.getElementById('scenario-chooser').classList.remove('hidden');
+}
+
 function displayDecisionOverlay() {
     const overlayElement = document.getElementById('decision-overlay');
     overlayElement.classList.remove(...overlayElement.classList);
@@ -272,9 +277,15 @@ function selectedScenario(s) {
     scenario = s;
     document.querySelector("#zoom-video-container video").setAttribute('src', s.videos[0]);
 
+    const videoElements = document.querySelectorAll("#right-panel video");
+    for(let i = 0; i < videoElements.length; i++){
+        videoElements[i].setAttribute('src', s.videos[i]);
+    }
+
 
 
     document.getElementById('scenario-chooser').classList.add('hidden');
+    document.getElementById('main-container').classList.remove('hidden');
 }
 
 window.addEventListener('scenario-selected', (event) => {
@@ -309,6 +320,7 @@ window.addEventListener('load', (event) => {
         updateVideoFromPercent(timeBarElement.value)
     }, false);
 
+    document.getElementById('splash-screen').onclick = showScenarioChooser;
     document.getElementById('decision-button').onclick = displayDecisionOverlay;
     document.getElementById('close-button').onclick = closeDecisionOverlay;
     document.getElementById('validate-button').onclick = () => makeDecision(VALIDATE);
