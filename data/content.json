@@ -23,7 +23,7 @@
       "assets/video/video2/angle3.mp4",
       "assets/video/video2/angle4.mp4"
     ],
-    "question": "Valider l'essai ?",
+    "question": "Valider l'essai 2 ?",
     "isValid": true,
     "explanationVideo": "assets/video/explanation.mp4"
   },
@@ -37,7 +37,7 @@
       "assets/video/video3/angle3.mp4",
       "assets/video/video3/angle4.mp4"
     ],
-    "question": "Valider l'essai ?",
+    "question": "Valider l'essai 3 ?",
     "isValid": true,
     "explanationVideo": "assets/video/explanation.mp4"
   }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ASM Experience - Arbitrage vidéo</title>
     <link rel="stylesheet" href="reset.css"/>
     <link rel="stylesheet" href="montserrat.css"/>
@@ -15,7 +15,6 @@
 <body>
 
 <script>
-    /*
     if('serviceWorker' in navigator) {
         navigator.serviceWorker
             .register('sw.js')
@@ -23,7 +22,6 @@
                 console.log("[Service Worker] Registered");
             });
     }
-    */
 </script>
 
 <div id="splash-screen">
@@ -31,7 +29,8 @@
         <img src="assets/images/asm-experience.png" alt="ASM Experience" />
     </div>
     <div class="title">
-        Arbitrage Vidéo
+        <h4>Passes au niveau suivant</h4>
+        <h1>Deviens l'arbitre vidéo !</h1>
     </div>
     <div class="powered-by-cgi">
         Powered by <img src="assets/images/cgi.png" alt="CGI" />
@@ -41,8 +40,20 @@
     </div>
 </div>
 
+<div id="popup" class="hidden">
+    <div id="popup-content">
+        <div class="text">
+            Vous avez déjà répondu à cette séquence.
+        </div>
+        <div class="actions">
+            Fermer
+        </div>
+    </div>
+</div>
+
 <template id="scenario-template">
     <div class="scenario">
+        <div class="scenario-checkmark"><i class="bi bi-check check"></i> <i class="bi bi-x cross"></i> </div>
         <div class="scenario-image"><img src="" alt=""/></div>
         <div class="scenario-text"></div>
         <div class="scenario-description"></div>
@@ -50,8 +61,12 @@
 </template>
 
 <div id="scenario-chooser" class="hidden">
-    <h1>Choix de la séquence de jeu:</h1>
+    <div id="new-game"><i class="bi bi-arrow-clockwise"></i> Démarrer une nouvelle partie</div>
+    <h1>Choisis une séquence de jeu à analyser:</h1>
     <div id="scenari-grid">
+    </div>
+    <div id="score" class="">
+        Score actuel: <span id="current-score"></span> / <span id="max-score"></span>
     </div>
     <div class="powered-by-cgi">
         Powered by <img src="assets/images/cgi.png" alt="CGI" />
@@ -61,7 +76,7 @@
 <div id="decision-overlay" class="hidden">
     <button id="close-button">×</button>
     <div id="step1">
-        <span class="decision-title">Valider l'essai ?</span>
+        <span class="decision-title"></span>
         <div class="decision-choices">
             <button id="validate-button"><i class="bi bi-hand-thumbs-up-fill"></i></button>
             <button id="invalidate-button"><i class="bi bi-hand-thumbs-down-fill"></i></button>
@@ -126,7 +141,7 @@
             </div>
         </div>
         <div id="bottom-container">
-            <div class="back-button">
+            <div id="back-button">
                 <i class="bi bi-arrow-left"></i> Retour à l'écran précédent
             </div>
             <div class="powered-by-cgi">
@@ -142,5 +157,18 @@
     </div>
 </div>
 
+<div id="final-score" class="hidden">
+    <div class="score">
+        <span class="wrapper">
+            Score final: <span id="final-score-content">3</span> / <span id="final-max-score-content">3</span>
+        </span>
+    </div>
+    <div class="instructions">
+        Appuyez sur l'écran pour démarrer une nouvelle partie
+    </div>
+    <div class="powered-by-cgi">
+        Powered by <img src="assets/images/cgi.png" alt="CGI" />
+    </div>
+</div>
 </body>
 </html>

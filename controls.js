@@ -7,6 +7,7 @@ const VALIDATE = true;
 const INVALIDATE = false;
 
 let scenario = null;
+let index = -1;
 
 let isPlaying = false;
 let playPauseElement, fromStartElement, toEndElement, stepBackElement, stepForwardElement;
@@ -18,9 +19,11 @@ let currentZoomLevel = 1;
 let isDragging = false, original = {x: 0, y: 0, offset: {x: 0, y: 0}};
 let offset = {x: 0, y: 0};
 
-let game = {
-    tryShouldBeValidated: true
-}
+let timeout;
+const TIMEOUT_DELAY = 90;
+
+
+let game = [];
 
 function togglePlayPause() {
     if (!isPlaying)
@@ -231,7 +234,9 @@ function bindMouseEventToVideoContainer() {
 }
 
 function showScenarioChooser() {
+    idleDetection();
     document.getElementById('splash-screen').classList.add('hidden');
+    document.getElementById('main-container').classList.add('hidden');
     document.getElementById('scenario-chooser').classList.remove('hidden');
 }
 
@@ -248,23 +253,40 @@ function closeDecisionOverlay() {
         e.pause();
         e.currentTime = 0;
     });
+
+    const totalScore = game.length;
+    const answeredScenari = game.filter(s => s.answered).length;
+    if(totalScore == answeredScenari) {
+        document.getElementById('splash-screen').classList.add('hidden');
+        document.getElementById('main-container').classList.add('hidden');
+        document.getElementById('final-score').classList.remove('hidden');
+    }
+    else if(game[index].answered) {
+        showScenarioChooser();
+    }
 }
 
 function makeDecision(validated) {
     let message = 'Bonne réponse';
     let classMessage = 'good-answer';
-    if (game.tryShouldBeValidated != validated) {
+    let valid = true;
+    if (game[index].isValid != validated) {
         message = 'Mauvaise réponse';
         classMessage = 'wrong-answer';
+        valid = false;
     }
 
-    let validatedMessage = 'l\'essai est valide ! 🏉';
-    if (!game.tryShouldBeValidated) {
-        validatedMessage = 'l\'essai n\'est pas valide ! ❌';
-    }
-    const finalMessage = `${message}, ${validatedMessage}`;
+    game[index].answered = true;
+    game[index].correctAnswer = valid;
+
+    let scenarioList = document.querySelectorAll('#scenari-grid .scenario');
+    scenarioList[index].classList.add('played');
+    scenarioList[index].classList.add(valid ? 'correct' : 'incorrect');
+
+    computeScore();
+
     const answerMessageElement = document.getElementById('answer-message');
-    answerMessageElement.innerText = finalMessage;
+    answerMessageElement.innerText = message;
     answerMessageElement.classList.remove(...answerMessageElement.classList);
     answerMessageElement.classList.add(classMessage);
     const overlayElement = document.getElementById('decision-overlay');
@@ -272,26 +294,91 @@ function makeDecision(validated) {
     overlayElement.classList.add('step2');
 }
 
-function selectedScenario(s) {
-    console.log('selectedScenario', s);
-    scenario = s;
-    document.querySelector("#zoom-video-container video").setAttribute('src', s.videos[0]);
-
-    const videoElements = document.querySelectorAll("#right-panel video");
-    for(let i = 0; i < videoElements.length; i++){
-        videoElements[i].setAttribute('src', s.videos[i]);
+function computeScore() {
+    const totalScore = game.length;
+    const answeredScenari = game.filter(s => s.answered).length;
+    const correctAnswers = game.filter(s => s.correctAnswer).length;
+    document.getElementById('current-score').innerText = correctAnswers;
+    document.getElementById('max-score').innerText = answeredScenari;
+    if(answeredScenari == 0) {
+        document.getElementById('score').classList.add('hidden');
+        document.getElementById('new-game').classList.add('hidden');
     }
+    else {
+        document.getElementById('score').classList.remove('hidden');
+        document.getElementById('new-game').classList.remove('hidden');
+    }
+}
 
+function selectedScenario(s, i) {
+    scenario = s;
+    index = i;
+    if(game[index].answered) {
+        document.getElementById('popup').classList.remove('hidden');
+    }
+    else {
+        document.querySelector("#zoom-video-container video").setAttribute('src', s.videos[0]);
 
+        const videoElements = document.querySelectorAll("#right-panel video");
+        for(let i = 0; i < videoElements.length; i++){
+            videoElements[i].setAttribute('src', s.videos[i]);
+        }
 
-    document.getElementById('scenario-chooser').classList.add('hidden');
-    document.getElementById('main-container').classList.remove('hidden');
+        document.getElementById('scenario-chooser').classList.add('hidden');
+        document.getElementById('main-container').classList.remove('hidden');
+        document.querySelector('#decision-overlay .decision-title').innerText = game[index].question;
+        document.querySelector('#decision-overlay .answer-explanation video').setAttribute('src', game[index].explanationVideo);
+    }
 }
 
 window.addEventListener('scenario-selected', (event) => {
-    console.log('listener event', event);
-    selectedScenario(event.detail.scenario);
+    selectedScenario(event.detail.scenario, event.detail.index);
 });
+
+window.addEventListener('content-fetched', (event) => {
+    contentFetched(event.detail.content);
+});
+
+function contentFetched(content) {
+    game = content.map(s => {
+        return {
+            question: s.question,
+            isValid: s.isValid,
+            explanationVideo: s.explanationVideo,
+            answered: false,
+            correctAnswer: false
+        }
+    });
+    computeScore();
+}
+
+function newGame() {
+    document.getElementById('main-container').classList.add('hidden');
+    document.getElementById('scenario-chooser').classList.add('hidden');
+    document.getElementById('decision-overlay').classList.add('hidden');
+    document.getElementById('final-score').classList.add('hidden');
+    document.getElementById('splash-screen').classList.remove('hidden');
+    document.querySelectorAll('#scenari-grid .scenario').forEach(c => c.classList.remove('played'));
+
+    game.forEach(s => {
+        s.answered = false;
+        s.correctAnswer = false;
+    });
+
+    computeScore();
+    idleDetection();
+}
+
+function idleDetection() {
+    resetTimeout();
+    const events = ['load', 'mousemove', 'mousedown', 'touchstart', 'touchmove', 'click', 'keydown'];
+    events.forEach(e => window.addEventListener(e, resetTimeout));
+}
+
+function resetTimeout() {
+    clearTimeout(timeout);
+    timeout = setTimeout(newGame, TIMEOUT_DELAY * 1000);
+}
 
 window.addEventListener('load', (event) => {
     videoElement = document.getElementById('video-container').querySelector('video');
@@ -325,4 +412,12 @@ window.addEventListener('load', (event) => {
     document.getElementById('close-button').onclick = closeDecisionOverlay;
     document.getElementById('validate-button').onclick = () => makeDecision(VALIDATE);
     document.getElementById('invalidate-button').onclick = () => makeDecision(INVALIDATE);
+
+    document.getElementById('back-button').addEventListener('click', showScenarioChooser);
+    document.getElementById('new-game').addEventListener('click', newGame);
+    document.getElementById('popup').addEventListener('click', () => {
+        document.getElementById('popup').classList.add('hidden');
+    });
+    document.getElementById('final-score').addEventListener('click', newGame);
+
 });

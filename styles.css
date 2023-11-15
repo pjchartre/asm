@@ -5,6 +5,7 @@
     --yellow-light: rgba(254, 233, 0, .8);
     --white: #FFFFFF;
     --white-light: rgba(255, 255, 255, .8);
+    --white-transparent: rgba(255, 255, 255, .4);
     --red: #FE0000;
     --red-light: rgba(254, 0, 0, .8);
     --green: #00CB00;
@@ -35,16 +36,17 @@ html, body {
     justify-content: space-between
 }
 
-#main-container #bottom-container .back-button {
+#main-container #bottom-container #back-button {
     color: var(--white);
     text-wrap: nowrap;
     font-weight: 200;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
-#main-container #bottom-container .back-button i {
+#main-container #bottom-container #back-button i {
     margin: 0px 10px;
 }
 
@@ -444,6 +446,7 @@ input[type=range]::-moz-range-progress {
     opacity: 1;
     transition: opacity .8s ease-out .8s;
     pointer-events: auto;
+    width: 100%;
 }
 
 .good-answer {
@@ -465,7 +468,8 @@ input[type=range]::-moz-range-progress {
 .answer-explanation span {
     font-size: 20px;
     margin: 20px;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
 }
 
 #scenario-chooser {
@@ -480,6 +484,22 @@ input[type=range]::-moz-range-progress {
     flex-direction: column;
     color: var(--white-light);
     justify-content: center;
+}
+
+#scenario-chooser #new-game {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 10px;
+    font-size: 24px;
+    font-weight: 200;
+}
+
+#scenario-chooser #score {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 32px;
+    font-weight: 600;
 }
 
 .hidden{
@@ -506,11 +526,58 @@ input[type=range]::-moz-range-progress {
     display: flex;
     flex-direction: column;
     margin: auto auto 25px;
-    cursor: pointer
+    cursor: pointer;
+    position: relative;
+    color: var(--white);
 }
+
+#scenari-grid .scenario.played {
+    color: var(--white-transparent);
+}
+
+.scenario .scenario-checkmark{
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 60px;
+    font-size: 102px;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.scenario.played .scenario-checkmark{
+    display: block;
+}
+
+.scenario .scenario-checkmark .bi{
+    display: none;
+}
+
+.scenario.correct .scenario-checkmark .bi.check{
+    color: var(--green);
+    display: inline;
+}
+
+.scenario.incorrect .scenario-checkmark .bi.cross{
+    color: var(--red);
+    display: inline;
+}
+
 
 .scenario .scenario-image {
     margin-bottom: 20px;
+    position: relative;
+}
+
+.scenario.played .scenario-image::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .scenario .scenario-image img {
@@ -563,10 +630,22 @@ input[type=range]::-moz-range-progress {
 
 #splash-screen .title {
     flex: 0.5;
-    font-size: 72px;
-    font-weight: 600;
     animation-duration: 3s;
     animation-delay: .5s;
+    display: flex;
+    flex-direction: column;
+}
+
+#splash-screen .title h1{
+    font-size: 72px;
+    font-weight: 600;
+
+}
+
+#splash-screen .title h4{
+    font-size: 32px;
+    font-weight: 200;
+    margin-bottom: 20px;
 }
 
 #splash-screen .asm-experience-logo {
@@ -612,7 +691,7 @@ input[type=range]::-moz-range-progress {
     animation-timing-function: ease-out;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
-    animation-delay: 8s;
+    animation-delay: 4s;
     animation-duration: 8s;
     opacity: 0;
 }
@@ -648,4 +727,87 @@ input[type=range]::-moz-range-progress {
   100% {
     opacity: 1;
   }
+}
+
+#popup{
+    display: block;
+    z-index: 3000;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+}
+
+
+#popup-content{
+    display: block;
+    z-index: 3000;
+    background-color: var(--white);
+    color: var(--dark-blue);
+    text-align: center;
+    font-size: 40px;
+    border-radius: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    padding: 40px 40px 30px 40px;
+}
+
+#popup::before{
+    content: '';
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 2999;
+}
+
+#popup .actions{
+    width: 80%;
+    margin: auto;
+    font-size: 22px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: solid 1px var(--dark-blue);
+}
+
+#final-score {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+}
+
+#final-score .score {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 72px;
+    font-weight: 800;
+}
+
+#final-score .powered-by-cgi {
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+#final-score .instructions {
+    position: absolute;
+    bottom: 200px;
+    animation-name: appears;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
+    animation-duration: 4s;
+    opacity: 0;
 }

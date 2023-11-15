@@ -4,8 +4,9 @@ window.addEventListener('load', async (event) => {
     const req = await fetch('data/content.json');
     const content = await req.json();
 
-    loadCacheFromContent(content);
+    initGameFromContent(content);
 
+    loadCacheFromContent(content);
     displayGridFromContent(content);
 
 });
@@ -31,8 +32,10 @@ const displayGridFromContent = (content) => {
     const grid = document.querySelector('#scenari-grid');
     const scenarioTemplate = document.querySelector('#scenario-template');
 
+    let i = 0;
     content.forEach(c => {
         const clone = scenarioTemplate.content.cloneNode(true);
+        const j = i;
         const img = clone.querySelector('.scenario-image img');
         img.setAttribute('src', c.previewImage);
         img.setAttribute('alt', c.title);
@@ -40,19 +43,24 @@ const displayGridFromContent = (content) => {
         clone.querySelector('.scenario-description').textContent = c.subTitle;
         clone.children[0].addEventListener('click', e => {
             console.log('click triggered');
-            selectScenario(c);
+            selectScenario(c, j);
         });
         grid.appendChild(clone);
+        i++;
     });
 };
 
-const selectScenario = (scenario) => {
+const selectScenario = (scenario, index) => {
         console.log('selectScenario', scenario);
-        const customEvent = new CustomEvent('scenario-selected', { detail: {scenario} });
+        const customEvent = new CustomEvent('scenario-selected', { detail: {scenario, index} });
         console.log('custom event', customEvent);
         window.dispatchEvent(customEvent);
 };
 
+const initGameFromContent = (content) => {
+    const customEvent = new CustomEvent('content-fetched', { detail: {content} });
+    window.dispatchEvent(customEvent);
+}
 
 
 
