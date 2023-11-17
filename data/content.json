@@ -1,44 +1,44 @@
 [
   {
-    "previewImage": "assets/preview1.jpg",
+    "previewImage": "data/preview1.jpg",
     "title": "Essai de Damian Penaud",
     "subTitle": "Angleterre - France, 13/03/2021",
     "videos": [
-      "assets/video/video1/angle1.mp4",
-      "assets/video/video1/angle2.mp4",
-      "assets/video/video1/angle3.mp4",
-      "assets/video/video1/angle4.mp4"
+      "data/video/video1/angle1.mp4",
+      "data/video/video1/angle2.mp4",
+      "data/video/video1/angle3.mp4",
+      "data/video/video1/angle4.mp4"
     ],
     "question": "Valider l'essai ?",
     "isValid": true,
-    "explanationVideo": "assets/video/explanation.mp4"
+    "explanationVideo": "data/video/video1/explanation.mp4"
   },
   {
-    "previewImage": "assets/preview1.jpg",
+    "previewImage": "data/preview1.jpg",
     "title": "Essai 2 de Damian Penaud",
     "subTitle": "Angleterre - France, 13/03/2021",
     "videos": [
-      "assets/video/video2/angle1.mp4",
-      "assets/video/video2/angle2.mp4",
-      "assets/video/video2/angle3.mp4",
-      "assets/video/video2/angle4.mp4"
+      "data/video/video2/angle1.mp4",
+      "data/video/video2/angle2.mp4",
+      "data/video/video2/angle3.mp4",
+      "data/video/video2/angle4.mp4"
     ],
     "question": "Valider l'essai 2 ?",
     "isValid": true,
-    "explanationVideo": "assets/video/explanation.mp4"
+    "explanationVideo": "data/video/video2/explanation.mp4"
   },
   {
-    "previewImage": "assets/preview1.jpg",
+    "previewImage": "data/preview1.jpg",
     "title": "Essai 3 de Damian Penaud",
     "subTitle": "Angleterre - France, 13/03/2021",
     "videos": [
-      "assets/video/video3/angle1.mp4",
-      "assets/video/video3/angle2.mp4",
-      "assets/video/video3/angle3.mp4",
-      "assets/video/video3/angle4.mp4"
+      "data/video/video3/angle1.mp4",
+      "data/video/video3/angle2.mp4",
+      "data/video/video3/angle3.mp4",
+      "data/video/video3/angle4.mp4"
     ],
     "question": "Valider l'essai 3 ?",
     "isValid": true,
-    "explanationVideo": "assets/video/explanation.mp4"
+    "explanationVideo": "data/video/video3/explanation.mp4"
   }
 ]

@@ -42,7 +42,6 @@ const displayGridFromContent = (content) => {
         clone.querySelector('.scenario-text').textContent = c.title;
         clone.querySelector('.scenario-description').textContent = c.subTitle;
         clone.children[0].addEventListener('click', e => {
-            console.log('click triggered');
             selectScenario(c, j);
         });
         grid.appendChild(clone);
@@ -51,9 +50,7 @@ const displayGridFromContent = (content) => {
 };
 
 const selectScenario = (scenario, index) => {
-        console.log('selectScenario', scenario);
         const customEvent = new CustomEvent('scenario-selected', { detail: {scenario, index} });
-        console.log('custom event', customEvent);
         window.dispatchEvent(customEvent);
 };
 

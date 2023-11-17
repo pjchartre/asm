@@ -86,7 +86,7 @@
         <span id="answer-message"></span>
         <div class="answer-explanation">
             <span>Pour mieux comprendre cette décision, voici une vidéo explicative:</span>
-            <video src="assets/video/video1/explanation.mp4" controls></video>
+            <video src="data/video/video1/explanation.mp4" controls></video>
         </div>
     </div>
 </div>
@@ -95,7 +95,7 @@
     <div id="left-panel">
         <div id="video-container">
             <div id="zoom-video-container">
-                <video src="assets/video/video1/angle1.mp4" muted></video>
+                <video src="data/video/video1/angle1.mp4" muted></video>
             </div>
         </div>
         <div id="controls">
@@ -135,6 +135,11 @@
                     </span>
                 </div>
             </div>
+            <div id="helper-container">
+                <div id="rate-helper">R</div>
+                <div id="control-helper">C</div>
+                <div id="zoom-helper">Z</div>
+            </div>
             <div id="decision-container">
                 <button class="button" id="decision-button"><i class="bi bi-hand-thumbs-up"></i> Prendre une décision <i
                         class="bi bi-hand-thumbs-down"></i></button>
@@ -144,16 +149,21 @@
             <div id="back-button">
                 <i class="bi bi-arrow-left"></i> Retour à l'écran précédent
             </div>
-            <div class="powered-by-cgi">
-                Powered by <img src="assets/images/cgi.png" alt="CGI" />
-            </div>
+
         </div>
     </div>
     <div id="right-panel">
-        <video src="assets/video/video1/angle1.mp4" muted></video>
-        <video src="assets/video/video1/angle2.mp4" muted></video>
-        <video src="assets/video/video1/angle3.mp4" muted></video>
-        <video src="assets/video/video1/angle4.mp4" muted></video>
+        <video src="data/video/video1/angle1.mp4" muted></video>
+        <video src="data/video/video1/angle2.mp4" muted></video>
+        <video src="data/video/video1/angle3.mp4" muted></video>
+        <video src="data/video/video1/angle4.mp4" muted></video>
+        <div class="explanations">
+            <i class="bi bi-hand-index"></i><br/>
+            Change d'angle de vue en appuyant sur une des miniatures
+        </div>
+        <div class="powered-by-cgi">
+            Powered by <img src="assets/images/cgi.png" alt="CGI" />
+        </div>
     </div>
 </div>
 

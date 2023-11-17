@@ -125,6 +125,7 @@ function updateVideoFromPercent(value) {
 }
 
 function updateVideoSrc(src) {
+    reinitZoomDrag();
     videoSrcIsChanging = true;
     const currentPercentage = videoElement.currentTime / videoElement.duration;
     videoElement.src = src;
@@ -200,36 +201,56 @@ function updateZoomLevel() {
     zoomElement.classList.add(`scale-${currentZoomLevel}x`);
 }
 
+function reinitZoomDrag() {
+    const videoContainerElement = document.getElementById('zoom-video-container');
+    videoElement.style = `transform: none`;
+    currentZoomLevel = 1;
+    original = {x: 0, y: 0, offset: {x: 0, y: 0}};
+    updateZoomLevel();
+}
 
 function bindMouseEventToVideoContainer() {
     const videoContainerElement = document.getElementById('zoom-video-container');
 
-    videoContainerElement.onmousedown = (event) => {
-        isDragging = true;
-        const containerElement = document.getElementById('video-container');
-        const rect = containerElement.getBoundingClientRect();
-        original.x = event.layerX - rect.left;
-        original.y = event.layerY - rect.top;
-    };
+    const onDown = (event) => {
+                        console.log({event});
+                         const isTouch = /touch/.test(event.type);
+                         const e = isTouch ? event.targetTouches[0] : event;
+                         isDragging = true;
+                         const containerElement = document.getElementById('video-container');
+                         const rect = containerElement.getBoundingClientRect();
+                         original.x = e.clientX - rect.left;
+                         original.y = e.clientY - rect.top;
+                     };
+    const onMove = (event) => {
+                         if (isDragging) {
+                             const containerElement = document.getElementById('video-container');
+                             const videoElement = containerElement.querySelector('video');
+                             const rect = containerElement.getBoundingClientRect();
+                             const isTouch = /touch/.test(event.type);
+                             const e = isTouch ? event.targetTouches[0] : event;
 
-    videoContainerElement.onmousemove = (event) => {
-        if (isDragging) {
-            const containerElement = document.getElementById('video-container');
-            const videoElement = containerElement.querySelector('video');
-            const rect = containerElement.getBoundingClientRect();
+                             const currentX = e.clientX - rect.left;
+                             const currentY = e.clientY - rect.top;
+                             offset.x = currentX - original.x + original.offset.x;
+                             offset.y = currentY - original.y + original.offset.y;
+                             videoElement.style = `transform: translate(${offset.x}px, ${offset.y}px)`;
+                         }
+                     };
 
-            const currentX = event.layerX - rect.left;
-            const currentY = event.layerY - rect.top;
-            offset.x = currentX - original.x + original.offset.x;
-            offset.y = currentY - original.y + original.offset.y;
-            videoElement.style = `transform: translate(${offset.x}px, ${offset.y}px)`;
-        }
-    }
-    videoContainerElement.onmouseup = (event) => {
-        isDragging = false;
-        original.offset.x = offset.x;
-        original.offset.y = offset.y;
-    }
+    const onUp = (event) => {
+                         isDragging = false;
+                         original.offset.x = offset.x;
+                         original.offset.y = offset.y;
+                     };
+    videoContainerElement.addEventListener('mousedown', onDown);
+    videoContainerElement.addEventListener('touchstart', onDown);
+
+    videoContainerElement.addEventListener('mousemove', onMove);
+    videoContainerElement.addEventListener('touchmove', onMove);
+
+    videoContainerElement.addEventListener('mouseup', onUp);
+    videoContainerElement.addEventListener('touchend', onUp);
 
 }
 
@@ -317,6 +338,7 @@ function selectedScenario(s, i) {
         document.getElementById('popup').classList.remove('hidden');
     }
     else {
+        reinitZoomDrag();
         document.querySelector("#zoom-video-container video").setAttribute('src', s.videos[0]);
 
         const videoElements = document.querySelectorAll("#right-panel video");
@@ -377,7 +399,7 @@ function idleDetection() {
 
 function resetTimeout() {
     clearTimeout(timeout);
-    timeout = setTimeout(newGame, TIMEOUT_DELAY * 1000);
+//    timeout = setTimeout(newGame, TIMEOUT_DELAY * 1000);
 }
 
 window.addEventListener('load', (event) => {
