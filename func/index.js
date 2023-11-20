@@ -1,7 +1,8 @@
+const { app } = require('@azure/functions');
 const { BlobServiceClient } = require("@azure/storage-blob");
 require("dotenv").config();
 
-async function main() {
+async function main(context) {
   try {
     const uploadContainerName = 'upload';
     const webContainerName = '$web';
@@ -33,7 +34,7 @@ async function main() {
         }
     }*/
 
-    await removeBlobHierarchical(webContainerClient, 'data');
+    await removeBlobHierarchical(webContainerClient, 'data', context);
 
 
     console.log('\nCopying blobs...');
@@ -58,19 +59,21 @@ async function main() {
     console.log(`Error: ${err.message}`);
   }
 
+  context.done();
+
   return new Promise( (resolve, reject) => {
     resolve(true);
   });
 }
 
 
-async function removeBlobHierarchical(dataBlobClient, prefix) {
+async function removeBlobHierarchical(dataBlobClient, prefix, context) {
     for await (const item of dataBlobClient.listBlobsByHierarchy('/', {prefix: prefix})) {
         if (item.kind === 'prefix') {
             const blob = dataBlobClient.getBlobClient(item.name);
             console.log(`\tBlobPrefix: ${item.name}`);
             await removeBlobHierarchical(dataBlobClient, item.name);
-             console.log(`\tDeleted: ${item.name}`);
+            console.log(`\tDeleted: ${item.name}`);
           } else {
             console.log(`\tBlobItem: name - ${item.name}`);
             const dataBlockBlobClient = await dataBlobClient.getBlockBlobClient(item.name);
@@ -80,6 +83,8 @@ async function removeBlobHierarchical(dataBlobClient, prefix) {
     }
 }
 
-main()
-  .then(() => console.log("Done"))
-  .catch((ex) => console.log(ex.message));
+
+module.exports = async function(context){
+  console.log({context});
+  await main(context);
+};
