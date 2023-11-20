@@ -825,3 +825,44 @@ input[type=range]::-moz-range-progress {
     animation-duration: 4s;
     opacity: 0;
 }
+
+#helper-container {
+    display: flex;
+    flex-direction: row;
+    color: var(--white-light);
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+#helper-container > * {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 15px;
+}
+
+#helper-container .bi {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+#rate-helper {
+    width: 25%;
+}
+
+#control-helper {
+    width: 50%;
+    flex-direction: column;
+}
+
+#zoom-helper {
+    width: 25%;
+}
+
+#zoom-helper .bi {
+    align-self: flex-end;
+    margin-right: 35px;
+}
+
+.bi-flipped::before {
+    transform: scaleX(-1);
+}

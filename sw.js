@@ -4,8 +4,12 @@ var appShellFiles = [
     'index.html',
     'sw.js',
     'styles.css',
+    'montserrat.css',
     'reset.css',
+    'assets/images/asm-experience.png',
+    'assets/images/cgi.png',
 ];
+var contentToCache = appShellFiles;
 
 const addResourcesToCache = async () => {
     const cache = await caches.open(cacheName);
@@ -13,7 +17,7 @@ const addResourcesToCache = async () => {
     await cache.addAll(contentToCache);
 };
 
-var contentToCache = appShellFiles;
+
 self.addEventListener('install', function(e) {
     console.log('[Service Worker] Installation');
     e.waitUntil(

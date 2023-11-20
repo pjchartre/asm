@@ -23,7 +23,7 @@
       "data/video/video2/angle3.mp4",
       "data/video/video2/angle4.mp4"
     ],
-    "question": "Valider l'essai 2 ?",
+    "question": "Valider la référence ?",
     "isValid": true,
     "explanationVideo": "data/video/video2/explanation.mp4"
   },
@@ -38,7 +38,7 @@
       "data/video/video3/angle4.mp4"
     ],
     "question": "Valider l'essai 3 ?",
-    "isValid": true,
+    "isValid": false,
     "explanationVideo": "data/video/video3/explanation.mp4"
   }
 ]
