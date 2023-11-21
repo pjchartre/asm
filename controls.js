@@ -277,7 +277,10 @@ function closeDecisionOverlay() {
 
     const totalScore = game.length;
     const answeredScenari = game.filter(s => s.answered).length;
+    const correctAnswers = game.filter(s => s.correctAnswer).length;
     if(totalScore == answeredScenari) {
+        document.getElementById('final-score-content').innerText = correctAnswers;
+        document.getElementById('final-max-score-content').innerText = totalScore;
         document.getElementById('splash-screen').classList.add('hidden');
         document.getElementById('main-container').classList.add('hidden');
         document.getElementById('final-score').classList.remove('hidden');
