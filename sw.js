@@ -1,8 +1,8 @@
-var cacheName = 'asm-experience-v0.1';
+const swVersion = '0.0.1';
+var cacheName = 'asm-experience-v0.3';
 var appShellFiles = [
     'controls.js',
     'index.html',
-    'sw.js',
     'styles.css',
     'montserrat.css',
     'reset.css',
@@ -27,6 +27,7 @@ self.addEventListener('install', function(e) {
 
 self.addEventListener('activate', function(event) {
   console.log('[Service Worker] Claiming control');
+  event.waitUntil(deleteOldCaches());
   return self.clients.claim();
 });
 
@@ -47,5 +48,16 @@ self.addEventListener('fetch', (e) => {
         })
     );
 });
+
+const deleteCache = async (key) => {
+  await caches.delete(key);
+};
+
+const deleteOldCaches = async () => {
+  const keyList = await caches.keys();
+  const cachesToDelete = keyList.filter((key) => cacheName != key);
+  console.log('[Service Worker] Deleting caches', cachesToDelete);
+  await Promise.all(cachesToDelete.map(deleteCache));
+};
 
 console.log('[Service Worker] Listener registered');

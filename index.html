@@ -5,6 +5,13 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ASM Experience - Arbitrage vidéo</title>
+    <meta name="description"
+          content="Jeu d'arbitrage vidéo pour le musée ASM Experience" />
+    <meta name="author" content="CGI" />
+    <meta name="theme-color" content="#002F6C" />
+    <link rel="manifest" href="asmtmo.webmanifest" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
     <link rel="stylesheet" href="reset.css"/>
     <link rel="stylesheet" href="montserrat.css"/>
     <link rel="stylesheet" href="styles.css"/>
@@ -24,175 +31,178 @@
             });
     }
 </script>
+<main>
 
-<div id="splash-screen">
-    <div class="asm-experience-logo">
-        <img src="assets/images/asm-experience.png" alt="ASM Experience" />
-    </div>
-    <div class="title">
-        <h4>Passe au niveau suivant</h4>
-        <h1>Deviens l'arbitre vidéo !</h1>
-    </div>
-    <div class="powered-by-cgi">
-        Powered by <img src="assets/images/cgi.png" alt="CGI" />
-    </div>
-    <div class="touch-indicator">
-        Appuyez sur l'écran pour commencer
-    </div>
-</div>
-
-<div id="popup" class="hidden">
-    <div id="popup-content">
-        <div class="text">
-            Vous avez déjà répondu à cette séquence.
+    <div id="splash-screen">
+        <div class="asm-experience-logo">
+            <img src="assets/images/asm-experience.png" alt="ASM Experience" />
         </div>
-        <div class="actions">
-            Fermer
+        <div class="title">
+            <h4>Passe au niveau suivant</h4>
+            <h1>Deviens l'arbitre vidéo !</h1>
+        </div>
+        <div class="powered-by-cgi">
+            Powered by <img src="assets/images/cgi.png" alt="CGI" />
+        </div>
+        <div class="touch-indicator">
+            Appuyez sur l'écran pour commencer
         </div>
     </div>
-</div>
 
-<template id="scenario-template">
-    <div class="scenario">
-        <div class="scenario-checkmark"><i class="bi bi-check check"></i> <i class="bi bi-x cross"></i> </div>
-        <div class="scenario-image"><img src="" alt=""/></div>
-        <div class="scenario-text"></div>
-        <div class="scenario-description"></div>
-    </div>
-</template>
-
-<div id="scenario-chooser" class="hidden">
-    <div id="new-game"><i class="bi bi-arrow-clockwise"></i> Démarrer une nouvelle partie</div>
-    <h1>Choisis une séquence de jeu à analyser:</h1>
-    <div id="scenari-grid">
-    </div>
-    <div id="score" class="">
-        Score actuel: <span id="current-score"></span> / <span id="max-score"></span>
-    </div>
-    <div class="powered-by-cgi">
-        Powered by <img src="assets/images/cgi.png" alt="CGI" />
-    </div>
-</div>
-
-<div id="decision-overlay" class="hidden">
-    <button id="close-button">×</button>
-    <div id="step1">
-        <span class="decision-title"></span>
-        <div class="decision-choices">
-            <button id="validate-button"><i class="bi bi-hand-thumbs-up-fill"></i></button>
-            <button id="invalidate-button"><i class="bi bi-hand-thumbs-down-fill"></i></button>
-        </div>
-    </div>
-    <div id="step2">
-        <span id="answer-message"></span>
-        <div class="answer-explanation">
-            <span>Pour mieux comprendre cette décision, voici une vidéo explicative:</span>
-            <video src="data/video/video1/explanation.mp4" controls></video>
-        </div>
-    </div>
-</div>
-
-<div id="main-container" class="hidden">
-    <div id="left-panel">
-        <div id="video-container">
-            <div id="zoom-video-container">
-                <video src="data/video/video1/angle1.mp4" muted></video>
+    <div id="popup" class="hidden">
+        <div id="popup-content">
+            <div class="text">
+                Vous avez déjà répondu à cette séquence.
+            </div>
+            <div class="actions">
+                Fermer
             </div>
         </div>
-        <div id="controls">
-            <div id="progress-bar">
-                <input type="range" name="time-bar" id="time-bar" min="0" max="1000" value="0"/>
-            </div>
-            <div id="buttons-container">
-                <div id="rate-container">
-                    <span class="button selected">x1</span>
-                    <span class="button">x0.5</span>
-                    <span class="button">x0.25</span>
-                    <span class="button">x0.1</span>
-                </div>
-                <div id="control-container">
-                    <span class="button" id="from-start-button">
-                        <i class="bi bi-skip-backward"></i>
-                    </span>
-                    <span class="button" id="step-back-button">
-                        <i class="bi bi-skip-start"></i>
-                    </span>
-                    <span class="button" id="play-pause-button">
-                        <i class="bi bi-play"></i>
-                    </span>
-                    <span class="button" id="step-forward-button">
-                        <i class="bi bi-skip-end"></i>
-                    </span>
-                    <span class="button" id="to-end-button">
-                        <i class="bi bi-skip-forward"></i>
-                    </span>
-                </div>
-                <div id="zoom-container">
-                    <span class="button" id="zoom-out-button">
-                        <i class="bi bi-zoom-out"></i>
-                    </span>
-                    <span class="button" id="zoom-in-button">
-                        <i class="bi bi-zoom-in"></i>
-                    </span>
-                </div>
-            </div>
-            <div id="helper-container">
-                <div id="rate-helper">
-                    <i class="bi bi-arrow-up"></i>
-                    Change la vitesse de lecture avec ces boutons
-                </div>
-                <div id="control-helper">
-                    <i class="bi bi-arrow-up"></i>
-                    Contrôle la façon de lire la vidéo avec ces boutons
-                </div>
-                <div id="zoom-helper">
-                    <i class="bi bi-arrow-up"></i>
-                    Change le zoom avec ces boutons
-                </div>
-            </div>
-            <div id="decision-container">
-                <button class="button" id="decision-button"><i class="bi bi-hand-thumbs-up"></i> Prendre une décision <i
-                        class="bi bi-hand-thumbs-down"></i></button>
-            </div>
-        </div>
-        <div id="bottom-container">
-            <div id="back-button">
-                <i class="bi bi-arrow-left"></i> Retour à l'écran précédent
-            </div>
-
-        </div>
     </div>
-    <div id="right-panel">
-        <video src="data/video/video1/angle1.mp4" muted></video>
-        <video src="data/video/video1/angle2.mp4" muted></video>
-        <video src="data/video/video1/angle3.mp4" muted></video>
-        <video src="data/video/video1/angle4.mp4" muted></video>
-        <div class="explanations">
-            <i class="bi bi-hand-index"></i><br/>
-            Change d'angle de vue en appuyant sur une des miniatures
+
+    <template id="scenario-template">
+        <div class="scenario">
+            <div class="scenario-checkmark"><i class="bi bi-check check"></i> <i class="bi bi-x cross"></i> </div>
+            <div class="scenario-image"><img src="" alt=""/></div>
+            <div class="scenario-text"></div>
+            <div class="scenario-description"></div>
+        </div>
+    </template>
+
+    <div id="scenario-chooser" class="hidden">
+        <div id="new-game"><i class="bi bi-arrow-clockwise"></i> Démarrer une nouvelle partie</div>
+        <h1>Choisis une séquence de jeu à analyser:</h1>
+        <div id="scenari-grid">
+        </div>
+        <div id="score" class="">
+            Score actuel: <span id="current-score"></span> / <span id="max-score"></span>
         </div>
         <div class="powered-by-cgi">
             Powered by <img src="assets/images/cgi.png" alt="CGI" />
         </div>
     </div>
-</div>
 
-<div id="final-score" class="hidden">
-    <div class="score">
+    <div id="decision-overlay" class="hidden">
+        <button id="close-button">×</button>
+        <div id="step1">
+            <span class="decision-title"></span>
+            <div class="decision-choices">
+                <button id="validate-button"><i class="bi bi-hand-thumbs-up-fill"></i></button>
+                <button id="invalidate-button"><i class="bi bi-hand-thumbs-down-fill"></i></button>
+            </div>
+        </div>
+        <div id="step2">
+            <span id="answer-message"></span>
+            <div class="answer-explanation">
+                <span>Pour mieux comprendre cette décision, voici une vidéo explicative:</span>
+                <video src="data/video/video1/explanation.mp4" controls></video>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-container" class="hidden">
+        <div id="left-panel">
+            <div id="video-container">
+                <div id="zoom-video-container">
+                    <video src="data/video/video1/angle1.mp4" muted></video>
+                </div>
+            </div>
+            <div id="controls">
+                <div id="progress-bar">
+                    <input type="range" name="time-bar" id="time-bar" min="0" max="1000" value="0"/>
+                </div>
+                <div id="buttons-container">
+                    <div id="rate-container">
+                        <span class="button selected">x1</span>
+                        <span class="button">x0.5</span>
+                        <span class="button">x0.25</span>
+                        <span class="button">x0.1</span>
+                    </div>
+                    <div id="control-container">
+                    <span class="button" id="from-start-button">
+                        <i class="bi bi-skip-backward"></i>
+                    </span>
+                        <span class="button" id="step-back-button">
+                        <i class="bi bi-skip-start"></i>
+                    </span>
+                        <span class="button" id="play-pause-button">
+                        <i class="bi bi-play"></i>
+                    </span>
+                        <span class="button" id="step-forward-button">
+                        <i class="bi bi-skip-end"></i>
+                    </span>
+                        <span class="button" id="to-end-button">
+                        <i class="bi bi-skip-forward"></i>
+                    </span>
+                    </div>
+                    <div id="zoom-container">
+                    <span class="button" id="zoom-out-button">
+                        <i class="bi bi-zoom-out"></i>
+                    </span>
+                        <span class="button" id="zoom-in-button">
+                        <i class="bi bi-zoom-in"></i>
+                    </span>
+                    </div>
+                </div>
+                <div id="helper-container">
+                    <div id="rate-helper">
+                        <i class="bi bi-arrow-up"></i>
+                        Change la vitesse de lecture avec ces boutons
+                    </div>
+                    <div id="control-helper">
+                        <i class="bi bi-arrow-up"></i>
+                        Contrôle la façon de lire la vidéo avec ces boutons
+                    </div>
+                    <div id="zoom-helper">
+                        <i class="bi bi-arrow-up"></i>
+                        Change le zoom avec ces boutons
+                    </div>
+                </div>
+                <div id="decision-container">
+                    <button class="button" id="decision-button"><i class="bi bi-hand-thumbs-up"></i> Prendre une décision <i
+                            class="bi bi-hand-thumbs-down"></i></button>
+                </div>
+            </div>
+            <div id="bottom-container">
+                <div id="back-button">
+                    <i class="bi bi-arrow-left"></i> Retour à l'écran précédent
+                </div>
+
+            </div>
+        </div>
+        <div id="right-panel">
+            <video src="data/video/video1/angle1.mp4" muted></video>
+            <video src="data/video/video1/angle2.mp4" muted></video>
+            <video src="data/video/video1/angle3.mp4" muted></video>
+            <video src="data/video/video1/angle4.mp4" muted></video>
+            <div class="explanations">
+                <i class="bi bi-hand-index"></i><br/>
+                Change d'angle de vue en appuyant sur une des miniatures
+            </div>
+            <div class="powered-by-cgi">
+                Powered by <img src="assets/images/cgi.png" alt="CGI" />
+            </div>
+        </div>
+    </div>
+
+    <div id="final-score" class="hidden">
+        <div class="score">
         <span class="wrapper">
             Score final: <span id="final-score-content">3</span> / <span id="final-max-score-content">3</span>
         </span>
-        <span class="sub-text score-0 hidden">Aïe aïe aïe, pas si facile que ça d'être arbitre ! 😱</span>
-        <span class="sub-text score-1 hidden">C'est un bon début, il faut persévérer ! 🥵</span>
-        <span class="sub-text score-2 hidden">Dommage, si proche de l'en-but ! 🏉</span>
-        <span class="sub-text score-3 hidden">Félicitations 🏆 ! L'arbitrage semble n'avoir aucun secret pour toi !</span>
+            <span class="sub-text score-0 hidden">Aïe aïe aïe, pas si facile que ça d'être arbitre ! 😱</span>
+            <span class="sub-text score-1 hidden">C'est un bon début, il faut persévérer ! 🥵</span>
+            <span class="sub-text score-2 hidden">Dommage, si proche de l'en-but ! 🏉</span>
+            <span class="sub-text score-3 hidden">Félicitations 🏆 ! L'arbitrage semble n'avoir aucun secret pour toi !</span>
+        </div>
+        <div class="instructions">
+            Appuyez sur l'écran pour démarrer une nouvelle partie
+        </div>
+        <div class="powered-by-cgi">
+            Powered by <img src="assets/images/cgi.png" alt="CGI" />
+        </div>
     </div>
-    <div class="instructions">
-        Appuyez sur l'écran pour démarrer une nouvelle partie
-    </div>
-    <div class="powered-by-cgi">
-        Powered by <img src="assets/images/cgi.png" alt="CGI" />
-    </div>
-</div>
+</main>
+
 </body>
 </html>

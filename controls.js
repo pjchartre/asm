@@ -463,6 +463,7 @@ function idleDetection() {
 
 function resetTimeout() {
     clearTimeout(timeout);
+    timeout = setTimeout(newGame, TIMEOUT_DELAY * 1000);
 }
 
 function fullScreen() {
