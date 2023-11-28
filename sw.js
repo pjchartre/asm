@@ -1,4 +1,4 @@
-var cacheName = 'asm-experience-v0';
+var cacheName = 'asm-experience-v0.1';
 var appShellFiles = [
     'controls.js',
     'index.html',

@@ -235,6 +235,8 @@ function bindMouseEventToVideoContainer() {
                              offset.x = currentX - original.x + original.offset.x;
                              offset.y = currentY - original.y + original.offset.y;
                              videoElement.style = `transform: translate(${offset.x}px, ${offset.y}px)`;
+                             const videoRect = videoElement.getBoundingClientRect();
+                             console.log({videoRect});
                          }
                      };
 
@@ -279,8 +281,7 @@ function closeDecisionOverlay() {
     const answeredScenari = game.filter(s => s.answered).length;
     const correctAnswers = game.filter(s => s.correctAnswer).length;
     if(totalScore == answeredScenari) {
-        document.getElementById('final-score-content').innerText = correctAnswers;
-        document.getElementById('final-max-score-content').innerText = totalScore;
+        computeFinalScore(correctAnswers, totalScore);
         document.getElementById('splash-screen').classList.add('hidden');
         document.getElementById('main-container').classList.add('hidden');
         document.getElementById('final-score').classList.remove('hidden');
@@ -288,6 +289,54 @@ function closeDecisionOverlay() {
     else if(game[index].answered) {
         showScenarioChooser();
     }
+}
+
+function computeFinalScore(correctAnswers, totalScore) {
+    document.querySelector('#final-score .score-'+correctAnswers).classList.remove('hidden');
+    if(correctAnswers == totalScore) {
+        fireConfettis();
+    }
+    document.getElementById('final-score-content').innerText = correctAnswers;
+    document.getElementById('final-max-score-content').innerText = totalScore;
+}
+
+function fireConfettis() {
+    setTimeout(() => {
+        fire(0.25, {
+          spread: 26,
+          startVelocity: 55,
+        });
+        fire(0.2, {
+          spread: 60,
+        });
+        fire(0.35, {
+          spread: 100,
+          decay: 0.91,
+          scalar: 0.8
+        });
+        fire(0.1, {
+          spread: 120,
+          startVelocity: 25,
+          decay: 0.92,
+          scalar: 1.2
+        });
+        fire(0.1, {
+          spread: 120,
+          startVelocity: 45,
+        });
+    }, 500);
+}
+
+function fire(particleRatio, opts) {
+    const count = 200;
+    const defaults = {
+      origin: { y: 0.7 }
+    };
+  confetti({
+    ...defaults,
+    ...opts,
+    particleCount: Math.floor(count * particleRatio)
+  });
 }
 
 function makeDecision(validated) {
@@ -335,6 +384,8 @@ function computeScore() {
 }
 
 function selectedScenario(s, i) {
+    timeBarElement.value = 0;
+    currentRate = 1;
     scenario = s;
     index = i;
     if(game[index].answered) {
@@ -342,9 +393,9 @@ function selectedScenario(s, i) {
     }
     else {
         reinitZoomDrag();
-        document.querySelector("#zoom-video-container video").setAttribute('src', s.videos[0]);
+        document.querySelector('#zoom-video-container video').setAttribute('src', s.videos[0]);
 
-        const videoElements = document.querySelectorAll("#right-panel video");
+        const videoElements = document.querySelectorAll('#right-panel video');
         for(let i = 0; i < videoElements.length; i++){
             videoElements[i].setAttribute('src', s.videos[i]);
         }
@@ -383,7 +434,17 @@ function newGame() {
     document.getElementById('decision-overlay').classList.add('hidden');
     document.getElementById('final-score').classList.add('hidden');
     document.getElementById('splash-screen').classList.remove('hidden');
-    document.querySelectorAll('#scenari-grid .scenario').forEach(c => c.classList.remove('played'));
+    document.querySelectorAll('#scenari-grid .scenario').forEach(c => {
+        c.classList.remove('played', 'correct', 'incorrect');
+    });
+
+    document.querySelectorAll('#final-score .sub-text').forEach(c => {
+        c.classList.remove('hidden');
+        c.classList.add('hidden');
+    });
+
+    confetti.reset();
+
 
     game.forEach(s => {
         s.answered = false;
@@ -402,10 +463,14 @@ function idleDetection() {
 
 function resetTimeout() {
     clearTimeout(timeout);
-//    timeout = setTimeout(newGame, TIMEOUT_DELAY * 1000);
+}
+
+function fullScreen() {
+    document.querySelector('html').requestFullscreen();
 }
 
 window.addEventListener('load', (event) => {
+
     videoElement = document.getElementById('video-container').querySelector('video');
     playPauseElement = document.getElementById('play-pause-button');
     fromStartElement = document.getElementById('from-start-button');
@@ -432,6 +497,10 @@ window.addEventListener('load', (event) => {
         updateVideoFromPercent(timeBarElement.value)
     }, false);
 
+    document.getElementById('splash-screen').addEventListener('click', () => {
+        fullScreen();
+        showScenarioChooser();
+    });
     document.getElementById('splash-screen').onclick = showScenarioChooser;
     document.getElementById('decision-button').onclick = displayDecisionOverlay;
     document.getElementById('close-button').onclick = closeDecisionOverlay;
