@@ -462,6 +462,8 @@ function selectedScenario(s, i) {
     else {
         reinitZoomDrag();
         document.querySelector('#zoom-video-container video').setAttribute('src', s.videos[0]);
+        original = {x: 0, y: 0, offset: {x: 0, y: 0}};
+        offset = {x: 0, y: 0};
 
         const videoElements = document.querySelectorAll('#right-panel video');
         for(let i = 0; i < videoElements.length; i++){

@@ -20,6 +20,7 @@ const addResourcesToCache = async () => {
 
 self.addEventListener('install', function(e) {
     console.log('[Service Worker] Installation');
+    self.skipWaiting();
     e.waitUntil(
         addResourcesToCache()
     );
