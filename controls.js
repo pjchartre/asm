@@ -18,6 +18,7 @@ let currentRate = 1;
 let currentZoomLevel = 1;
 let isDragging = false, original = {x: 0, y: 0, offset: {x: 0, y: 0}};
 let offset = {x: 0, y: 0};
+let originalVideoRect = {};
 
 let timeout;
 const TIMEOUT_DELAY = 90;
@@ -193,6 +194,7 @@ function zoomIn() {
 function zoomOut() {
     currentZoomLevel = Math.max(currentZoomLevel - 1, MIN_ZOOM_LEVEL);
     updateZoomLevel();
+    checkAndUpdateVideoTransform();
 }
 
 function updateZoomLevel() {
@@ -209,18 +211,58 @@ function reinitZoomDrag() {
     updateZoomLevel();
 }
 
+function checkAndUpdateVideoTransform() {
+    const containerElement = document.getElementById('video-container');
+    const videoElement = containerElement.querySelector('video');
+    const videoRect = videoElement.getBoundingClientRect();
+    const rect = containerElement.getBoundingClientRect();
+    let offsetX = original.offset.x;
+    let offsetY = original.offset.y;
+    if(videoRect.top > rect.top){
+        const topDiff = videoRect.top - rect.top;
+        offsetY = offsetY - Math.round(topDiff / currentZoomLevel);
+    }
+    else if(videoRect.bottom < rect.bottom){
+        const bottomDiff = videoRect.bottom - rect.bottom;
+        offsetY = offsetY - Math.round(bottomDiff / currentZoomLevel);
+    }
+
+    if(videoRect.left > rect.left){
+        const leftDiff = videoRect.left - rect.left;
+        offsetX = offsetX - Math.round(leftDiff / currentZoomLevel);
+    }
+    else if(videoRect.right < rect.right){
+        const rightDiff = videoRect.right - rect.right;
+        offsetX = offsetX - Math.round(rightDiff / currentZoomLevel);
+    }
+
+    original.offset.x = offsetX;
+    original.offset.y = offsetY;
+    offset.x = offsetX;
+    offset.y = offsetY;
+    videoElement.style = `transform: translate(${offsetX}px, ${offsetY}px)`;
+
+}
+
 function bindMouseEventToVideoContainer() {
     const videoContainerElement = document.getElementById('zoom-video-container');
 
     const onDown = (event) => {
-                        console.log({event});
                          const isTouch = /touch/.test(event.type);
                          const e = isTouch ? event.targetTouches[0] : event;
                          isDragging = true;
                          const containerElement = document.getElementById('video-container');
+                         const videoElement = containerElement.querySelector('video');
+                         const videoRect = videoElement.getBoundingClientRect();
                          const rect = containerElement.getBoundingClientRect();
                          original.x = e.clientX - rect.left;
                          original.y = e.clientY - rect.top;
+                         originalVideoRect = {
+                            top: videoRect.top,
+                            bottom: videoRect.bottom,
+                            left: videoRect.left,
+                            right: videoRect.right
+                         }
                      };
     const onMove = (event) => {
                          if (isDragging) {
@@ -230,13 +272,39 @@ function bindMouseEventToVideoContainer() {
                              const isTouch = /touch/.test(event.type);
                              const e = isTouch ? event.targetTouches[0] : event;
 
+                             const touchXValid = e.clientX >= rect.left && e.clientX <= rect.right;
+                             const touchYValid = e.clientY >= rect.top && e.clientY <= rect.bottom;
+
+                             if(!touchXValid || !touchYValid){
+                                isDragging = false;
+                                return;
+                             }
                              const currentX = e.clientX - rect.left;
                              const currentY = e.clientY - rect.top;
-                             offset.x = currentX - original.x + original.offset.x;
-                             offset.y = currentY - original.y + original.offset.y;
+
+                             const moved = {
+                                x: currentX - original.x,
+                                y: currentY - original.y
+                             }
+
+                             const simulatedVideoRect = {
+                                left: originalVideoRect.left + (moved.x * currentZoomLevel),
+                                right: originalVideoRect.right + (moved.x * currentZoomLevel),
+                                top: originalVideoRect.top + (moved.y * currentZoomLevel),
+                                bottom: originalVideoRect.bottom + (moved.y * currentZoomLevel)
+                             }
+                             const xValid = simulatedVideoRect.left <= rect.left && simulatedVideoRect.right >= rect.right;
+                             const yValid = simulatedVideoRect.top <= rect.top && simulatedVideoRect.bottom >= rect.bottom;
+
+                             if(xValid){
+                                offset.x = moved.x + original.offset.x;
+                             }
+
+                             if(yValid){
+                                offset.y = moved.y + original.offset.y;
+                             }
+
                              videoElement.style = `transform: translate(${offset.x}px, ${offset.y}px)`;
-                             const videoRect = videoElement.getBoundingClientRect();
-                             console.log({videoRect});
                          }
                      };
 
