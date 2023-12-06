@@ -564,6 +564,7 @@ input[type=range]::-moz-range-progress {
     cursor: pointer;
     position: relative;
     color: var(--white);
+    height: 100%;
 }
 
 #scenari-grid .scenario.played {
