@@ -23,7 +23,16 @@ const loadCacheFromContent = (content) => {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then((registration) => {
             console.log('[Content Loader] Service worker actif, chargement des ressources');
-            assetList.forEach(e => fetch(e));
+            let customEvent = new CustomEvent('cache-loading');
+            window.dispatchEvent(customEvent);
+
+            var promises = [];
+            assetList.forEach(e => promises.push(fetch(e)));
+            Promise.all(promises).then(() => {
+                customEvent = new CustomEvent('cache-done');
+                window.dispatchEvent(customEvent);
+            });
+
         });
     }
 };

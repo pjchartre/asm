@@ -632,6 +632,26 @@ input[type=range]::-moz-range-progress {
     opacity: .7;
 }
 
+#loading-screen {
+    background-image: radial-gradient(circle, var(--light-blue), var(--dark-blue));
+    color: var(--white);
+    position: absolute;
+    z-index: 3000;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading-screen h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
 #splash-screen {
     background-image: radial-gradient(circle, var(--light-blue), var(--dark-blue));
     color: var(--white);
@@ -645,7 +665,6 @@ input[type=range]::-moz-range-progress {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
 #splash-screen .asm-experience-logo, #splash-screen .title, #splash-screen .powered-by-cgi {
@@ -896,4 +915,19 @@ input[type=range]::-moz-range-progress {
 
 .bi-flipped::before {
     transform: scaleX(-1);
+}
+
+.spinner {
+    display: inline-block;
+    width: 5rem;
+    height: 5rem;
+    vertical-align: text-bottom;
+    border: 0.5em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border 1s linear infinite;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
 }

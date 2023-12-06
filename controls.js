@@ -485,6 +485,14 @@ window.addEventListener('content-fetched', (event) => {
     contentFetched(event.detail.content);
 });
 
+window.addEventListener('cache-loading', (event) => {
+    document.getElementById('loading-screen').classList.remove('hidden');
+});
+
+window.addEventListener('cache-done', (event) => {
+    document.getElementById('loading-screen').classList.add('hidden');
+});
+
 function contentFetched(content) {
     game = content.map(s => {
         return {
