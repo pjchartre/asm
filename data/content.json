@@ -1,7 +1,7 @@
 [
   {
     "previewImage": "data/preview1.jpg",
-    "title": "Essai de Peceli yato",
+    "title": "Essai de Peceli Yato",
     "subTitle": "ASM - Perpignan, 26/08/2023",
     "videos": [
       "data/video/video1/angle1.mp4",
@@ -30,7 +30,7 @@
   {
     "previewImage": "data/preview3.jpg",
     "title": "Suspicion de déblayage illicite",
-    "subTitle": "Angleterre - France, 02/09/2023",
+    "subTitle": "ASM - La Rochelle, 02/09/2023",
     "videos": [
       "data/video/video3/angle1.mp4",
       "data/video/video3/angle2.mp4",
