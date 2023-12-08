@@ -109,6 +109,7 @@ function reloadVideoMetaData() {
     }
     videoElement.onended = () => {
         pause();
+        rewind();
     };
 }
 
@@ -451,8 +452,17 @@ function computeScore() {
     }
 }
 
+function reinitRate() {
+    const ratesElements = document.getElementById('rate-container').querySelectorAll('.button');
+    [...ratesElements].forEach(b => {
+        b.classList.remove('selected');
+    })
+    ratesElements[0].classList.add('selected');
+}
+
 function selectedScenario(s, i) {
     timeBarElement.value = 0;
+    reinitRate();
     currentRate = 1;
     scenario = s;
     index = i;
