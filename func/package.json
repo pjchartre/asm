@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure/eventgrid": "^5.0.0",
     "@azure/functions": "^4.1.0",
     "@azure/identity": "^4.0.0",
     "@azure/storage-blob": "^12.17.0",

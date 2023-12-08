@@ -21,11 +21,11 @@ async function main(context) {
     const uploadContainerClient = blobServiceClient.getContainerClient(uploadContainerName);
     const webContainerClient = blobServiceClient.getContainerClient(webContainerName);
 
-    /*console.log('\nDeleting blobs...');
+    /*context.log('\nDeleting blobs...');
 
     for await (const dataBlob of webContainerClient.listBlobsFlat({prefix: 'data/'})) {
         if(dataBlob.properties.ResourceType != 'directory') {
-            console.log('Deleting ', dataBlob.name);
+            context.log('Deleting ', dataBlob.name);
             const dataBlockBlobClient = await webContainerClient.getBlockBlobClient(dataBlob.name);
             await dataBlockBlobClient.deleteIfExists({deleteSnapshots: 'include'});    
         }
@@ -37,13 +37,13 @@ async function main(context) {
     await removeBlobHierarchical(webContainerClient, 'data', context);
 
 
-    console.log('\nCopying blobs...');
+    context.log('\nCopying blobs...');
 
     const allPollers = [];
     for await (const item of uploadContainerClient.listBlobsFlat()) {
         if(item.properties.ResourceType != 'directory') {
             const blob = uploadContainerClient.getBlobClient(item.name);
-            console.log(`\nCopying ${blob.name} from URL: ${blob.url}`);
+            context.log(`\nCopying ${blob.name} from URL: ${blob.url}`);
             const destinationBlob = webContainerClient.getBlobClient(`data/${blob.name}`);
             const poller = await destinationBlob.beginCopyFromURL(blob.url);
     
@@ -51,12 +51,12 @@ async function main(context) {
         }
     }
     
-    console.log('Waiting for copy to finish');
+    context.log('Waiting for copy to finish');
     await Promise.all(allPollers);
-    console.log('Copy is done');
+    context.log('Copy is done');
 
   } catch (err) {
-    console.log(`Error: ${err.message}`);
+    context.log(`Error: ${err.message}`);
   }
 
   context.done();
@@ -71,20 +71,20 @@ async function removeBlobHierarchical(dataBlobClient, prefix, context) {
     for await (const item of dataBlobClient.listBlobsByHierarchy('/', {prefix: prefix})) {
         if (item.kind === 'prefix') {
             const blob = dataBlobClient.getBlobClient(item.name);
-            console.log(`\tBlobPrefix: ${item.name}`);
-            await removeBlobHierarchical(dataBlobClient, item.name);
-            console.log(`\tDeleted: ${item.name}`);
+            context.log(`\tBlobPrefix: ${item.name}`);
+            await removeBlobHierarchical(dataBlobClient, item.name, context);
+            context.log(`\tDeleted: ${item.name}`);
           } else {
-            console.log(`\tBlobItem: name - ${item.name}`);
+            context.log(`\tBlobItem: name - ${item.name}`);
             const dataBlockBlobClient = await dataBlobClient.getBlockBlobClient(item.name);
             await dataBlockBlobClient.deleteIfExists({deleteSnapshots: 'include'});
-            console.log(`\tDeleted: ${item.name}`);
+            context.log(`\tDeleted: ${item.name}`);
           }
     }
 }
 
-
-module.exports = async function(context){
-  console.log({context});
+module.exports = async function (context, eventGridEvent) {
+  context.log({context});
+  context.log("Data: " + JSON.stringify(eventGridEvent.data));
   await main(context);
 };
