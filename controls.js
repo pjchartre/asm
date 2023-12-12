@@ -461,6 +461,8 @@ function reinitRate() {
 }
 
 function selectedScenario(s, i) {
+    pause();
+    rewind();
     timeBarElement.value = 0;
     reinitRate();
     currentRate = 1;
