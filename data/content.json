@@ -6,8 +6,7 @@
     "videos": [
       "data/video/video1/angle1.mp4",
       "data/video/video1/angle2.mp4",
-      "data/video/video1/angle3.mp4",
-      "data/video/video1/angle4.mp4"
+      "data/video/video1/angle3.mp4"
     ],
     "question": "Valider l'essai ?",
     "isValid": false,
@@ -20,8 +19,7 @@
     "videos": [
       "data/video/video2/angle1.mp4",
       "data/video/video2/angle2.mp4",
-      "data/video/video2/angle3.mp4",
-      "data/video/video2/angle4.mp4"
+      "data/video/video2/angle3.mp4"
     ],
     "question": "Valider l'essai ?",
     "isValid": false,
@@ -34,8 +32,7 @@
     "videos": [
       "data/video/video3/angle1.mp4",
       "data/video/video3/angle2.mp4",
-      "data/video/video3/angle3.mp4",
-      "data/video/video3/angle4.mp4"
+      "data/video/video3/angle3.mp4"
     ],
     "question": "Mettre un carton jaune ?",
     "isValid": true,

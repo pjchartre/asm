@@ -1,5 +1,5 @@
-const swVersion = '0.1.0';
-var cacheName = 'asm-experience-v1.0';
+const swVersion = '0.1.1';
+var cacheName = 'asm-experience-v1.1';
 var appShellFiles = [
     'controls.js',
     'index.html',
